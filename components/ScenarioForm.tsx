@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Frequency } from "@/lib/backtest";
 import type { Scenario, ScenarioCoin } from "@/lib/scenario-url";
 import { parseNumberInput } from "@/lib/format";
@@ -58,11 +58,14 @@ export function ScenarioForm({
   const todayStr = new Date().toISOString().slice(0, 10);
 
   // Local text state for the amount so typing isn't fought by reformatting.
+  // Sync at render time (not in an effect) when the amount changes externally
+  // — the React-recommended pattern for deriving state from props.
   const [amountText, setAmountText] = useState(String(amount));
-  useEffect(() => {
-    if (parseNumberInput(amountText) !== amount) setAmountText(String(amount));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount]);
+  const [prevAmount, setPrevAmount] = useState(amount);
+  if (amount !== prevAmount) {
+    setPrevAmount(amount);
+    setAmountText(String(amount));
+  }
 
   return (
     <div className="flex flex-col gap-5">
