@@ -6,8 +6,8 @@ au design et aux standards de la suite [`simulateurs.sinvestir.fr`](https://simu
 On reprend la **logique fonctionnelle** (backtest historique DCA / one-shot) et on
 l'habille au thème S'investir, dans un composant **autonome et embarquable**.
 
-> 🔗 **Démo en ligne** : _à compléter après déploiement Vercel_
-> 🧩 **Aperçu intégrable (iframe)** : `/embed`
+> 🔗 **Démo en ligne** : https://sinvestir-one.vercel.app/les-simulateurs/crypto
+> 🧩 **Aperçu intégrable (iframe)** : https://sinvestir-one.vercel.app/embed
 
 ---
 
@@ -90,7 +90,7 @@ scénario par URL). Exemple :
 
 ```html
 <iframe
-  src="https://VOTRE-DEPLOIEMENT.vercel.app/embed?c=BTCEUR&s=BTC&n=Bitcoin&cur=EUR&a=25&f=weekly&from=2018-01-01&to=2026-06-22"
+  src="https://sinvestir-one.vercel.app/embed?c=BTCEUR&s=BTC&n=Bitcoin&cur=EUR&a=25&f=weekly&from=2018-01-01&to=2026-06-22"
   width="100%"
   height="900"
   style="border:0"
