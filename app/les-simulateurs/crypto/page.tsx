@@ -1,4 +1,7 @@
 import { SimulatorClient } from "@/components/SimulatorClient";
+import { SimulatorHeader } from "@/components/SimulatorHeader";
+import { TopBar } from "@/components/TopBar";
+import { SiteFooter } from "@/components/SiteFooter";
 import { decodeScenario, defaultScenario, today } from "@/lib/scenario-url";
 
 export default async function CryptoSimulatorPage({
@@ -14,8 +17,17 @@ export default async function CryptoSimulatorPage({
   const scenario = decodeScenario(params, defaultScenario(today()));
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
-      <SimulatorClient initialScenario={scenario} />
-    </main>
+    <div className="flex min-h-screen flex-col">
+      <TopBar />
+      <main className="bg-hero-glow flex-1">
+        <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+          <SimulatorHeader />
+          <div className="mt-10">
+            <SimulatorClient initialScenario={scenario} />
+          </div>
+        </div>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
