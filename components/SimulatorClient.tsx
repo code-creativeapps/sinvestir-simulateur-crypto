@@ -5,6 +5,8 @@ import type { Scenario } from "@/lib/scenario-url";
 import { encodeScenario } from "@/lib/scenario-url";
 import { Card } from "@/components/ui/Card";
 import { ScenarioForm } from "@/components/ScenarioForm";
+import { ResultsPanel } from "@/components/ResultsPanel";
+import { useBacktest } from "@/lib/useBacktest";
 
 export function SimulatorClient({
   initialScenario,
@@ -13,6 +15,7 @@ export function SimulatorClient({
 }) {
   const [scenario, setScenario] = useState<Scenario>(initialScenario);
   const [shareLabel, setShareLabel] = useState("Partager mes résultats");
+  const { result, loading, error, firstDataDate } = useBacktest(scenario);
 
   const patch = useCallback(
     (p: Partial<Scenario>) => setScenario((s) => ({ ...s, ...p })),
@@ -48,7 +51,14 @@ export function SimulatorClient({
           shareLabel={shareLabel}
         />
       </Card>
-      {/* Results panel & chart are added in the next issues. */}
+      <ResultsPanel
+        result={result}
+        scenario={scenario}
+        loading={loading}
+        error={error}
+        firstDataDate={firstDataDate}
+      />
+      {/* History chart & calendar are added in the next issue. */}
     </div>
   );
 }
