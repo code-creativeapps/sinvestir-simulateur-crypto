@@ -156,6 +156,23 @@ describe("runBacktest — edge cases", () => {
     expect(r.finalValue).toBeCloseTo(500, 6);
   });
 
+  it("skips contributions dated before price data exists", () => {
+    // Ask from January but data only starts in March → only Mar–Apr buys count.
+    const prices: PricePoint[] = [
+      { date: "2020-03-01", price: 100 },
+      { date: "2020-04-01", price: 100 },
+    ];
+    const r = runBacktest({
+      prices,
+      amount: 100,
+      frequency: "monthly",
+      from: "2020-01-01",
+      to: "2020-04-30",
+    });
+    expect(r.contributions).toBe(2); // Mar + Apr, not Jan/Feb
+    expect(r.invested).toBe(200);
+  });
+
   it("returns an empty result with no prices", () => {
     const r = runBacktest({
       prices: [],

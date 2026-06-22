@@ -175,11 +175,17 @@ export function runBacktest(input: BacktestInput): BacktestResult {
   if (prices.length === 0 || amount <= 0) return empty;
 
   // Resolve each contribution to a (date, price), accumulating units/invested.
+  // Skip contributions dated before any price data exists (e.g. an EUR pair
+  // that only started trading after the requested `from`): you can't buy an
+  // asset before it traded.
+  const firstMs = toUTC(prices[0].date);
   const dates = contributionDates(frequency, from, to);
   const buys = dates
     .map((date) => {
+      const ms = toUTC(date);
+      if (ms < firstMs) return null;
       const price = priceAt(prices, date);
-      return price && price > 0 ? { ms: toUTC(date), price } : null;
+      return price && price > 0 ? { ms, price } : null;
     })
     .filter((b): b is { ms: number; price: number } => b !== null)
     .sort((a, b) => a.ms - b.ms);
