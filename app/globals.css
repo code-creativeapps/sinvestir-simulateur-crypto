@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/*
+  S'investir design tokens — calibrated from the in-app simulators
+  (simulateurs.sinvestir.fr, logged-in dark theme).
+*/
+@theme {
+  /* Surfaces */
+  --color-surface: #0b0f1a; /* deep navy page background */
+  --color-surface-raised: #121726; /* cards / panels */
+  --color-surface-tint: rgba(16, 152, 247, 0.05); /* accent-tinted card */
+
+  /* Brand / accents */
+  --color-accent: #1098f7; /* bright in-app blue */
+  --color-brand: #0049c6; /* S'investir brand blue */
+  --color-gold: #f8d047; /* highlight / badge yellow */
+  --color-positive: #22c55e;
+  --color-negative: #ef4444;
+
+  /* Text */
+  --color-ink: #ffffff;
+  --color-ink-muted: rgba(255, 255, 255, 0.6);
+  --color-ink-faint: rgba(255, 255, 255, 0.4);
+
+  /* Lines */
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-faint: rgba(255, 255, 255, 0.05);
+
+  /* Radii */
+  --radius-card: 20px;
+  --radius-pill: 999px;
+
+  /* Fonts (wired to next/font in layout.tsx) */
+  --font-sans: var(--font-lexend), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-jakarta), var(--font-lexend), ui-sans-serif, sans-serif;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+}
+
+/* Subtle radial glow behind the hero, S'investir style */
+.bg-hero-glow {
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(16, 152, 247, 0.12), transparent 70%),
+    var(--color-surface);
+}
