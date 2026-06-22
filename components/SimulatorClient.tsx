@@ -6,6 +6,7 @@ import { encodeScenario } from "@/lib/scenario-url";
 import { Card } from "@/components/ui/Card";
 import { ScenarioForm } from "@/components/ScenarioForm";
 import { ResultsPanel } from "@/components/ResultsPanel";
+import { HistorySection } from "@/components/HistorySection";
 import { useBacktest } from "@/lib/useBacktest";
 
 export function SimulatorClient({
@@ -41,7 +42,8 @@ export function SimulatorClient({
   }, [scenario]);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+    <div>
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
       <Card>
         <h3 className="mb-5 text-lg font-semibold">Simulation</h3>
         <ScenarioForm
@@ -58,7 +60,8 @@ export function SimulatorClient({
         error={error}
         firstDataDate={firstDataDate}
       />
-      {/* History chart & calendar are added in the next issue. */}
+      </div>
+      <HistorySection result={result} scenario={scenario} />
     </div>
   );
 }
