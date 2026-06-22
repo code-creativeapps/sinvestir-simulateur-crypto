@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getProvider } from "@/lib/prices";
 
+// Run in EU regions: closer to the price sources and avoids US geo-blocks.
+export const preferredRegion = ["fra1", "cdg1"];
+
 /**
  * GET /api/coins?q=bitcoin
  * Empty query → popular coins. Otherwise a name/symbol search.

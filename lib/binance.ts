@@ -11,7 +11,9 @@
 import type { PricePoint } from "@/lib/backtest";
 import type { Coin, Currency, PriceProvider } from "@/lib/prices";
 
-const BASE = "https://api.binance.com/api/v3";
+// Public market-data domain — same endpoints as api.binance.com but without the
+// geo-restriction that returns 451 from US regions (e.g. Vercel's default iad1).
+const BASE = "https://data-api.binance.vision/api/v3";
 const DAY_MS = 86_400_000;
 
 /** Quote assets we accept, in order of preference. */

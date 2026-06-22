@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getProvider } from "@/lib/prices";
 
+// Run in EU regions: closer to the price sources and avoids US geo-blocks.
+export const preferredRegion = ["fra1", "cdg1"];
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
