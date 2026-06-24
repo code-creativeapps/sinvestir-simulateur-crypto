@@ -11,17 +11,14 @@ export function formatCurrency(value: number, currency: Currency = "EUR"): strin
   }).format(value);
 }
 
-/** Compact currency for axes/badges, e.g. "12,3 k €". */
-export function formatCurrencyCompact(
-  value: number,
-  currency: Currency = "EUR",
-): string {
-  return new Intl.NumberFormat(LOCALE, {
-    style: "currency",
-    currency,
+/** Terse compact currency for chart axes — no spaces, e.g. "240k€", "1,2M€". */
+export function formatAxisTick(value: number, currency: Currency = "EUR"): string {
+  const symbol = currency === "EUR" ? "€" : "$";
+  const compact = new Intl.NumberFormat(LOCALE, {
     notation: "compact",
     maximumFractionDigits: 1,
   }).format(value);
+  return `${compact.replace(/\s/g, "")}${symbol}`;
 }
 
 export function formatNumber(value: number, maximumFractionDigits = 2): string {

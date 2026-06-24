@@ -16,7 +16,7 @@ import type { Currency } from "@/lib/prices";
 import { cn } from "@/lib/cn";
 import {
   formatCurrency,
-  formatCurrencyCompact,
+  formatAxisTick,
   formatDate,
   formatQuantity,
 } from "@/lib/format";
@@ -123,7 +123,7 @@ export function HistoryChart({
       </div>
 
       <ResponsiveContainer width="100%" height={320}>
-        <LineChart data={series} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
+        <LineChart data={series} margin={{ top: 8, right: 4, left: 0, bottom: 0 }}>
           <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
           <XAxis
             dataKey="date"
@@ -134,19 +134,19 @@ export function HistoryChart({
           />
           <YAxis
             yAxisId="left"
-            tickFormatter={(v: number) => formatCurrencyCompact(v, currency)}
-            tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 12 }}
+            tickFormatter={(v: number) => formatAxisTick(v, currency)}
+            tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 11 }}
             stroke="rgba(255,255,255,0.1)"
-            width={64}
+            width={44}
           />
           <YAxis
             yAxisId="right"
             orientation="right"
             hide={!unitsVisible}
             tickFormatter={(v: number) => formatQuantity(v)}
-            tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 12 }}
+            tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 11 }}
             stroke="rgba(255,255,255,0.1)"
-            width={64}
+            width={44}
           />
           <Tooltip
             content={<ChartTooltip currency={currency} symbol={symbol} />}

@@ -9,6 +9,7 @@ export function Stat({
   tooltip,
   valueClassName,
   emphasis,
+  className,
 }: {
   label: string;
   value: React.ReactNode;
@@ -16,14 +17,16 @@ export function Stat({
   tooltip?: string;
   valueClassName?: string;
   emphasis?: boolean;
+  className?: string;
 }) {
   return (
     <div
       className={cn(
-        "rounded-card border p-4",
+        "min-w-0 rounded-card border p-4",
         emphasis
           ? "border-accent/20 bg-surface-tint"
           : "border-line-faint bg-white/[0.02]",
+        className,
       )}
     >
       <div className="flex items-center gap-1.5 text-sm text-ink-muted">
@@ -32,8 +35,8 @@ export function Stat({
       </div>
       <div
         className={cn(
-          "mt-1.5 font-semibold tabular-nums",
-          emphasis ? "text-2xl" : "text-xl",
+          "mt-1.5 font-semibold leading-tight tabular-nums",
+          emphasis ? "text-xl sm:text-2xl" : "text-lg sm:text-xl",
           valueClassName,
         )}
       >
