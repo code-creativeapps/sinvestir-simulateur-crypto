@@ -1,4 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
+
+import { useState } from "react";
 import { cn } from "@/lib/cn";
 
 // Deterministic accent color per ticker so coins are visually distinguishable.
@@ -13,6 +16,15 @@ function colorFor(symbol: string): string {
   return COLORS[h % COLORS.length];
 }
 
+/**
+ * Public, symbol-keyed icon CDN (loads in the user's browser, so it's not
+ * affected by the server-side geo-blocks that shape our price source choice).
+ * Covers the popular coins; misses fall back to the generated initials badge.
+ */
+function iconUrl(symbol: string): string {
+  return `https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/${symbol.toLowerCase()}.svg`;
+}
+
 export function CoinBadge({
   symbol,
   image,
@@ -24,17 +36,25 @@ export function CoinBadge({
   size?: number;
   className?: string;
 }) {
-  if (image) {
+  // Prefer a provider-supplied image (e.g. CoinGecko); otherwise the CDN icon.
+  const src = image ?? iconUrl(symbol);
+  // Track the src that failed so changing coins re-attempts the new icon.
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+
+  if (src && failedSrc !== src) {
     return (
       <img
-        src={image}
+        src={src}
         alt=""
         width={size}
         height={size}
-        className={cn("rounded-full", className)}
+        loading="lazy"
+        onError={() => setFailedSrc(src)}
+        className={cn("shrink-0 rounded-full", className)}
       />
     );
   }
+
   return (
     <span
       aria-hidden
