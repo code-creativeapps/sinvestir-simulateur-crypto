@@ -37,7 +37,7 @@ function DateInput({
       min={min}
       max={max}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-xl border border-line bg-white/[0.02] px-3 py-2.5 text-ink outline-none transition focus:border-accent [color-scheme:dark]"
+      className="w-full border-b border-line bg-transparent py-2 text-lg text-ink outline-none transition focus:border-accent [color-scheme:dark]"
     />
   );
 }
@@ -119,16 +119,16 @@ export function ScenarioForm({
         </Field>
       </div>
 
-      <div className="flex flex-col gap-3 pt-1 sm:flex-row">
+      <div className="flex flex-col gap-3 pt-1">
         <Button
-          variant="secondary"
-          className="flex-1"
+          variant="primary"
+          className="w-full"
           disabled
           title="Disponible avec un compte S'investir (Supabase)"
         >
           Enregistrer la simulation
         </Button>
-        <Button variant="primary" className="flex-1" onClick={onShare}>
+        <Button variant="white" className="w-full" onClick={onShare}>
           {shareLabel}
         </Button>
       </div>

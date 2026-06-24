@@ -4,15 +4,19 @@ import { useCallback, useEffect, useState } from "react";
 import type { Scenario } from "@/lib/scenario-url";
 import { encodeScenario } from "@/lib/scenario-url";
 import { Card } from "@/components/ui/Card";
+import { SectionTitle } from "@/components/ui/SectionTitle";
 import { ScenarioForm } from "@/components/ScenarioForm";
 import { ResultsPanel } from "@/components/ResultsPanel";
 import { HistorySection } from "@/components/HistorySection";
+import { FormationCTA } from "@/components/FormationCTA";
 import { useBacktest } from "@/lib/useBacktest";
 
 export function SimulatorClient({
   initialScenario,
+  showFormationCTA = false,
 }: {
   initialScenario: Scenario;
+  showFormationCTA?: boolean;
 }) {
   const [scenario, setScenario] = useState<Scenario>(initialScenario);
   const [shareLabel, setShareLabel] = useState("Partager mes résultats");
@@ -43,9 +47,9 @@ export function SimulatorClient({
 
   return (
     <div>
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(320px,1fr)_minmax(0,2fr)]">
       <Card>
-        <h3 className="mb-5 text-lg font-semibold">Simulation</h3>
+        <SectionTitle className="mb-5">Simulation</SectionTitle>
         <ScenarioForm
           scenario={scenario}
           onChange={patch}
@@ -62,6 +66,7 @@ export function SimulatorClient({
       />
       </div>
       <HistorySection result={result} scenario={scenario} />
+      {showFormationCTA && <FormationCTA />}
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "secondary" | "white" | "ghost";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-accent text-white hover:opacity-90",
+  primary: "bg-brand text-white hover:opacity-90",
   secondary: "border border-line text-ink hover:bg-white/5",
+  white: "bg-white text-surface hover:bg-white/90",
   ghost: "text-ink-muted hover:text-ink",
 };
 

@@ -2,6 +2,7 @@ import type { BacktestResult } from "@/lib/backtest";
 import type { Scenario } from "@/lib/scenario-url";
 import { Card } from "@/components/ui/Card";
 import { Stat } from "@/components/ui/Stat";
+import { SectionTitle } from "@/components/ui/SectionTitle";
 import {
   formatCurrency,
   formatPercent,
@@ -78,7 +79,7 @@ export function ResultsPanel({
   return (
     <Card className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Vos résultats</h3>
+        <SectionTitle>Vos résultats</SectionTitle>
         <span className="rounded-pill bg-white/5 px-3 py-1 text-xs text-ink-muted">
           {scenario.coin.symbol}
         </span>

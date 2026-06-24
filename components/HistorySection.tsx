@@ -5,6 +5,7 @@ import type { BacktestResult } from "@/lib/backtest";
 import type { Scenario } from "@/lib/scenario-url";
 import { Card } from "@/components/ui/Card";
 import { Stat } from "@/components/ui/Stat";
+import { SectionTitle } from "@/components/ui/SectionTitle";
 import { Tabs } from "@/components/ui/Tabs";
 import { HistoryChart } from "@/components/HistoryChart";
 import { CalendarTable } from "@/components/CalendarTable";
@@ -29,7 +30,7 @@ export function HistorySection({
   return (
     <Card className="mt-6">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-lg font-semibold">Historique</h3>
+        <SectionTitle>Historique</SectionTitle>
         <Tabs
           active={tab}
           onChange={setTab}
@@ -41,7 +42,12 @@ export function HistorySection({
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <Stat label="Capital final" value={formatCurrency(result.finalValue, cur)} emphasis />
+        <Stat
+          label="Capital final"
+          value={formatCurrency(result.finalValue, cur)}
+          emphasis
+          className="col-span-2 sm:col-span-1"
+        />
         <Stat label="Investi" value={formatCurrency(result.invested, cur)} />
         <Stat
           label="Performance"

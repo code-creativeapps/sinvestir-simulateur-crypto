@@ -49,17 +49,17 @@ export function UnitInput({
   "value" | "onChange" | "id"
 >) {
   return (
-    <div className="flex items-center rounded-xl border border-line bg-white/[0.02] px-3 transition focus-within:border-accent">
+    <div className="flex items-center gap-2 border-b border-line transition focus-within:border-accent">
       <input
         id={id}
         value={value}
         inputMode={inputMode}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-transparent py-2.5 text-ink outline-none placeholder:text-ink-faint"
+        className="w-full bg-transparent py-2 text-lg text-ink outline-none placeholder:text-ink-faint"
         {...props}
       />
       {unit && (
-        <span className="ml-2 shrink-0 text-xs font-medium uppercase tracking-wide text-ink-faint">
+        <span className="shrink-0 text-xs font-medium uppercase tracking-wide text-ink-faint">
           {unit}
         </span>
       )}

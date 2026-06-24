@@ -23,7 +23,7 @@ export function Segmented<T extends string>({
     <div
       role="radiogroup"
       aria-label={ariaLabel}
-      className="grid auto-cols-fr grid-flow-col gap-1 rounded-pill border border-line bg-white/[0.02] p-1"
+      className="grid grid-cols-2 gap-1 rounded-2xl border border-line bg-white/[0.02] p-1"
     >
       {options.map((opt) => {
         const selected = opt.value === value;
@@ -35,8 +35,10 @@ export function Segmented<T extends string>({
             aria-checked={selected}
             onClick={() => onChange(opt.value)}
             className={cn(
-              "rounded-pill px-3 py-1.5 text-sm font-medium transition",
-              selected ? "bg-accent text-white" : "text-ink-muted hover:text-ink",
+              "whitespace-nowrap rounded-xl px-3 py-2 text-center text-sm font-medium transition",
+              selected
+                ? "bg-accent text-white shadow-sm"
+                : "text-ink-muted hover:text-ink",
             )}
           >
             {opt.label}
