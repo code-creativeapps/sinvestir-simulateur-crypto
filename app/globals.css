@@ -56,3 +56,59 @@ h1, h2, h3, h4 {
     radial-gradient(60% 50% at 50% 0%, rgba(16, 152, 247, 0.12), transparent 70%),
     var(--color-surface);
 }
+
+/* react-day-picker — themed to the S'investir dark calendar */
+.calendar {
+  --rdp-accent-color: var(--color-accent);
+  --rdp-accent-background-color: rgba(16, 152, 247, 0.15);
+  --rdp-day-width: 38px;
+  --rdp-day-height: 38px;
+  --rdp-today-color: var(--color-gold);
+  --rdp-outside-opacity: 0.35;
+  --rdp-disabled-opacity: 0.25;
+  font-family: var(--font-sans);
+}
+.calendar .rdp-month_caption,
+.calendar .rdp-weekday {
+  color: var(--color-ink-muted);
+}
+.calendar .rdp-weekday {
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+.calendar .rdp-day_button {
+  border-radius: 10px;
+  color: var(--color-ink);
+}
+.calendar .rdp-day_button:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+/* Selected day: filled accent pill (override the default border-only look) */
+.calendar .rdp-selected .rdp-day_button {
+  border: none;
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+}
+.calendar .rdp-chevron {
+  fill: var(--color-ink-muted);
+}
+/* Month / year dropdowns */
+.calendar .rdp-dropdown {
+  color: var(--color-ink);
+}
+.calendar .rdp-dropdown_root {
+  border-radius: 8px;
+}
+.calendar .rdp-dropdown_root:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.calendar select.rdp-dropdown option {
+  background: var(--color-surface-raised);
+  color: var(--color-ink);
+}
+.calendar .rdp-button_previous:hover,
+.calendar .rdp-button_next:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}

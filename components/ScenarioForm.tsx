@@ -5,6 +5,7 @@ import type { Frequency } from "@/lib/backtest";
 import type { Scenario, ScenarioCoin } from "@/lib/scenario-url";
 import { parseNumberInput } from "@/lib/format";
 import { Field, UnitInput } from "@/components/ui/Field";
+import { DateField } from "@/components/ui/DateField";
 import { Segmented } from "@/components/ui/Segmented";
 import { Button } from "@/components/ui/Button";
 import { CoinSelect } from "@/components/CoinSelect";
@@ -15,32 +16,6 @@ const FREQUENCIES: { value: Frequency; label: string }[] = [
   { value: "weekly", label: "Hebdo" },
   { value: "monthly", label: "Mensuel" },
 ];
-
-function DateInput({
-  id,
-  value,
-  min,
-  max,
-  onChange,
-}: {
-  id: string;
-  value: string;
-  min?: string;
-  max?: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <input
-      id={id}
-      type="date"
-      value={value}
-      min={min}
-      max={max}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full border-b border-line bg-transparent py-2 text-lg text-ink outline-none transition focus:border-accent [color-scheme:dark]"
-    />
-  );
-}
 
 export function ScenarioForm({
   scenario,
@@ -101,7 +76,7 @@ export function ScenarioForm({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Depuis" htmlFor="from">
-          <DateInput
+          <DateField
             id="from"
             value={from}
             max={to}
@@ -109,7 +84,7 @@ export function ScenarioForm({
           />
         </Field>
         <Field label="Jusqu'au" htmlFor="to">
-          <DateInput
+          <DateField
             id="to"
             value={to}
             min={from}

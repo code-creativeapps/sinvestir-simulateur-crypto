@@ -27,15 +27,18 @@ interface SeriesDef {
   key: Key;
   label: string;
   color: string;
-  axis: "left" | "right";
+  axis: "left" | "price" | "units";
   kind: "currency" | "units";
 }
 
 const SERIES: SeriesDef[] = [
+  // Valeur & Investi are € totals → shared left axis, directly comparable.
   { key: "value", label: "Valeur", color: "#1098f7", axis: "left", kind: "currency" },
   { key: "invested", label: "Investi", color: "#f8d047", axis: "left", kind: "currency" },
-  { key: "price", label: "Prix", color: "#a855f7", axis: "left", kind: "currency" },
-  { key: "units", label: "Acquis", color: "#22c55e", axis: "right", kind: "units" },
+  // Prix (€/unité) and Acquis (quantité) live on very different scales, so each
+  // gets its own auto-scaled axis — otherwise they flatline against the totals.
+  { key: "price", label: "Prix", color: "#a855f7", axis: "price", kind: "currency" },
+  { key: "units", label: "Acquis", color: "#22c55e", axis: "units", kind: "units" },
 ];
 
 function ChartTooltip({
@@ -94,7 +97,6 @@ export function HistoryChart({
   });
 
   const toggle = (k: Key) => setVisible((v) => ({ ...v, [k]: !v[k] }));
-  const unitsVisible = visible.units;
 
   return (
     <div>
@@ -140,9 +142,18 @@ export function HistoryChart({
             width={44}
           />
           <YAxis
-            yAxisId="right"
+            yAxisId="price"
             orientation="right"
-            hide={!unitsVisible}
+            hide={!visible.price}
+            tickFormatter={(v: number) => formatAxisTick(v, currency)}
+            tick={{ fill: "#c4a3f0", fontSize: 11 }}
+            stroke="rgba(168,85,247,0.25)"
+            width={44}
+          />
+          <YAxis
+            yAxisId="units"
+            orientation="right"
+            hide={!visible.units}
             tickFormatter={(v: number) => formatQuantity(v)}
             tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 11 }}
             stroke="rgba(255,255,255,0.1)"
