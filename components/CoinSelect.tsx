@@ -19,6 +19,8 @@ export function CoinSelect({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  // Cache results per query so reopening the picker is instant (no refetch flash).
+  const cacheRef = useRef<Map<string, Coin[]>>(new Map());
 
   // Close on outside click / Escape.
   useEffect(() => {
@@ -38,18 +40,30 @@ export function CoinSelect({
   // Debounced search whenever the dropdown is open.
   useEffect(() => {
     if (!open) return;
+    const key = query.trim();
+
+    // Cache hit → show instantly, no fetch, no loading flash.
+    const cached = cacheRef.current.get(key);
+    if (cached) {
+      setResults(cached);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+
     const ctrl = new AbortController();
     const t = setTimeout(async () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(
-          `/api/coins?q=${encodeURIComponent(query.trim())}`,
-          { signal: ctrl.signal },
-        );
+        const res = await fetch(`/api/coins?q=${encodeURIComponent(key)}`, {
+          signal: ctrl.signal,
+        });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error ?? "Erreur de chargement.");
-        setResults(data.coins ?? []);
+        const coins: Coin[] = data.coins ?? [];
+        cacheRef.current.set(key, coins);
+        setResults(coins);
       } catch (err) {
         if ((err as Error).name !== "AbortError") {
           setError((err as Error).message);
@@ -107,39 +121,39 @@ export function CoinSelect({
             />
           </div>
           <ul role="listbox" className="max-h-72 overflow-y-auto p-1">
-            {loading && (
+            {results.map((coin) => (
+              <li key={coin.id}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={coin.id === value.id}
+                  onClick={() => select(coin)}
+                  className={cn(
+                    "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition hover:bg-white/5",
+                    coin.id === value.id && "bg-white/5",
+                  )}
+                >
+                  <CoinBadge symbol={coin.symbol} image={coin.image} size={24} />
+                  <span className="flex-1 truncate">{coin.name}</span>
+                  <span className="text-ink-faint">{coin.symbol}</span>
+                  {coin.currency === "USD" && (
+                    <span className="rounded bg-white/5 px-1.5 py-0.5 text-[10px] text-ink-faint">
+                      USD
+                    </span>
+                  )}
+                </button>
+              </li>
+            ))}
+            {/* Only surface these states when there's nothing to show, so a
+                background refetch never replaces the visible list. */}
+            {loading && results.length === 0 && (
               <li className="px-3 py-3 text-sm text-ink-muted">Chargement…</li>
             )}
-            {error && !loading && (
+            {error && results.length === 0 && (
               <li className="px-3 py-3 text-sm text-[color:var(--color-negative)]">
                 {error}
               </li>
             )}
-            {!loading &&
-              !error &&
-              results.map((coin) => (
-                <li key={coin.id}>
-                  <button
-                    type="button"
-                    role="option"
-                    aria-selected={coin.id === value.id}
-                    onClick={() => select(coin)}
-                    className={cn(
-                      "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition hover:bg-white/5",
-                      coin.id === value.id && "bg-white/5",
-                    )}
-                  >
-                    <CoinBadge symbol={coin.symbol} image={coin.image} size={24} />
-                    <span className="flex-1 truncate">{coin.name}</span>
-                    <span className="text-ink-faint">{coin.symbol}</span>
-                    {coin.currency === "USD" && (
-                      <span className="rounded bg-white/5 px-1.5 py-0.5 text-[10px] text-ink-faint">
-                        USD
-                      </span>
-                    )}
-                  </button>
-                </li>
-              ))}
             {!loading && !error && results.length === 0 && (
               <li className="px-3 py-3 text-sm text-ink-muted">
                 Aucun résultat.
