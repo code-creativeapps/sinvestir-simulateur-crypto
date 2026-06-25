@@ -37,6 +37,26 @@ export function CoinSelect({
     };
   }, [open]);
 
+  // Prefetch the default list on mount so the first open is instant (the
+  // request runs during page load, before the user clicks the picker).
+  useEffect(() => {
+    if (cacheRef.current.has("")) return;
+    const ctrl = new AbortController();
+    (async () => {
+      try {
+        const res = await fetch("/api/coins?q=", { signal: ctrl.signal });
+        const data = await res.json();
+        if (!res.ok) return;
+        const coins: Coin[] = data.coins ?? [];
+        cacheRef.current.set("", coins);
+        setResults((prev) => (prev.length === 0 ? coins : prev));
+      } catch {
+        // Ignore prefetch failures; opening the picker will retry/report.
+      }
+    })();
+    return () => ctrl.abort();
+  }, []);
+
   // Debounced search whenever the dropdown is open.
   useEffect(() => {
     if (!open) return;
@@ -53,6 +73,14 @@ export function CoinSelect({
 
     const ctrl = new AbortController();
     const t = setTimeout(async () => {
+      // The prefetch (or a prior search) may have filled the cache during the
+      // debounce window — use it instead of firing a duplicate request.
+      const fresh = cacheRef.current.get(key);
+      if (fresh) {
+        setResults(fresh);
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
       try {
